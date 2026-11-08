@@ -1,125 +1,413 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#101820">
-<title>ARCHER HQ · Bodycam Link</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ARCHER HQ | Command Dashboard</title>
+
 <style>
-:root{color-scheme:dark;--bg:#0b1117;--panel:#121d26;--line:#263744;--green:#69e0a1;--muted:#91a2af;--amber:#ffc66d}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#1a2b35,#0b1117 55%);color:#e8f0f4;font:15px system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh}
-header{padding:22px 18px 14px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:12px}
-h1{font-size:18px;letter-spacing:.13em;margin:0} .sub{color:var(--muted);font-size:11px;letter-spacing:.16em;margin-top:5px}
-.pill{border:1px solid #315341;color:var(--green);padding:6px 9px;border-radius:99px;font-size:11px;letter-spacing:.08em}
-main{max-width:900px;margin:auto;padding:18px;display:grid;gap:15px}
-.panel{background:linear-gradient(145deg,#15232d,#101820);border:1px solid var(--line);border-radius:15px;padding:16px;box-shadow:0 12px 35px #0005}
-h2{font-size:13px;letter-spacing:.12em;color:#b9cbd5;margin:0 0 12px}
-label{display:block;color:var(--muted);font-size:12px;margin:10px 0 6px}
-input,select,button{font:inherit;border-radius:9px;padding:12px;border:1px solid #344957;background:#0b141b;color:#edf5f8;width:100%}
-button{background:#1b6043;border-color:#2a805a;font-weight:700;cursor:pointer;margin-top:10px}
-button.secondary{background:#172630;border-color:#3a4d59}button:disabled{opacity:.45;cursor:not-allowed}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.status{color:var(--green);font-size:13px;min-height:20px;margin-top:10px}
-video{width:100%;background:#05090c;border:1px solid #30424e;border-radius:11px;display:block;max-height:65vh;object-fit:contain}
-.hint{color:var(--muted);font-size:12px;line-height:1.5}.code{font:700 22px ui-monospace,monospace;letter-spacing:.2em;color:var(--green)}
-footer{text-align:center;color:#728591;font-size:11px;padding:8px 18px 25px}
-@media(max-width:600px){.row{grid-template-columns:1fr}header{align-items:flex-start;flex-direction:column}}
+:root {
+    color-scheme: dark;
+    --bg: #0a1117;
+    --panel: #15232c;
+    --green: #6ee7a5;
+    --amber: #ffc66d;
+    --text: #e8f0f4;
+    --muted: #91a4af;
+    --line: #2a3d49;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    background: radial-gradient(ellipse at top, #203744, #0a1117 60%);
+    color: var(--text);
+    font-family: system-ui, sans-serif;
+}
+
+header {
+    padding: 22px;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+h1 {
+    font-size: 20px;
+    letter-spacing: 3px;
+    margin: 0;
+}
+
+.subtitle {
+    color: var(--muted);
+    font-size: 10px;
+    letter-spacing: 3px;
+}
+
+.online {
+    color: var(--green);
+    border: 1px solid #355c48;
+    border-radius: 20px;
+    padding: 7px 12px;
+    font-size: 11px;
+}
+
+main {
+    max-width: 1100px;
+    margin: auto;
+    padding: 25px;
+}
+
+.welcome {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.clock {
+    text-align: right;
+    font-size: 23px;
+    font-weight: bold;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 14px;
+}
+
+.card {
+    background: linear-gradient(145deg, #15232c, #101920);
+    border: 1px solid var(--line);
+    border-radius: 13px;
+    padding: 17px;
+}
+
+.s3 { grid-column: span 3; }
+.s5 { grid-column: span 5; }
+.s7 { grid-column: span 7; }
+.s12 { grid-column: span 12; }
+
+h3 {
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: #b6c8d1;
+    margin-top: 0;
+}
+
+.metric {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.small {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.status {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 13px;
+}
+
+.tag {
+    color: var(--green);
+    border: 1px solid #355c48;
+    border-radius: 20px;
+    padding: 3px 8px;
+    font-size: 10px;
+}
+
+.amber { color: var(--amber); }
+
+button, input {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #344a57;
+    background: #0b151c;
+    color: white;
+}
+
+button {
+    cursor: pointer;
+    background: #1c5b40;
+}
+
+button:hover { filter: brightness(1.2); }
+
+.item {
+    display: flex;
+    justify-content: space-between;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 13px;
+}
+
+.formrow {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.formrow input { flex: 1; min-width: 0; }
+
+.log {
+    font-family: monospace;
+    font-size: 12px;
+    color: var(--green);
+    white-space: pre-wrap;
+}
+
+footer {
+    text-align: center;
+    color: var(--muted);
+    padding: 25px;
+    font-size: 11px;
+}
+
+@media(max-width:700px) {
+    .s3, .s5, .s7 { grid-column: span 6; }
+}
+
+@media(max-width:450px) {
+    .s3, .s5, .s7, .s12 { grid-column: span 12; }
+}
 </style>
 </head>
+
 <body>
-<header><div><h1>ARCHER HQ <span style="color:var(--green)">/ BODYCAM LINK</span></h1><div class="sub">LOCAL LIVE VIDEO SYSTEM · BETA</div></div><div class="pill" id="topState">● OFFLINE</div></header>
+
+<header>
+    <div>
+        <h1>ARCHER HQ</h1>
+        <div class="subtitle">COMMAND & EQUIPMENT DASHBOARD</div>
+    </div>
+    <div class="online">● SYSTEM ONLINE</div>
+</header>
+
 <main>
-<section class="panel">
-<h2>01 / DEVICE MODE</h2>
-<div class="row">
-<div><label for="mode">This device is</label><select id="mode"><option value="viewer">PC — COMMAND SCREEN</option><option value="camera">PHONE — BODYCAM</option></select></div>
-<div><label for="room">Room code</label><input id="room" maxlength="8" autocomplete="off" spellcheck="false" placeholder="e.g. 7K4P9Q"></div>
+
+<div class="welcome">
+    <div>
+        <h2>COMMAND OVERVIEW</h2>
+        <div class="small">Welcome to headquarters.</div>
+    </div>
+    <div class="clock">
+        <div id="clock">--:--:--</div>
+        <div class="small" id="date"></div>
+    </div>
 </div>
-<div class="row"><button id="start">CONNECT</button><button class="secondary" id="stop" disabled>DISCONNECT</button></div>
-<div class="status" id="status" aria-live="polite">Ready. Choose a device mode and enter the same room code on both devices.</div>
-<p class="hint">Tip: generate a code on the PC, then type that same code on the phone. Keep the code private.</p>
-</section>
-<section class="panel" id="viewerPanel">
-<h2>02 / LIVE BODYCAM FEED</h2>
-<video id="remote" autoplay playsinline controls></video>
-<p class="hint">The PC waits for the phone camera. The live feed appears here when connected.</p>
-</section>
-<section class="panel" id="cameraPanel" hidden>
-<h2>02 / PHONE CAMERA</h2>
-<video id="preview" autoplay muted playsinline></video>
-<div class="row"><button class="secondary" id="flip" disabled>SWITCH CAMERA</button><div class="hint" style="align-self:center">Camera preview stays on this phone. Allow camera access when prompted.</div></div>
-</section>
-<section class="panel">
-<h2>03 / CONNECTION INFO</h2>
-<div class="hint">Connection: <strong id="connection">Not connected</strong></div>
-<div class="hint" style="margin-top:7px">Transport: encrypted WebRTC video. PeerJS is used only to help the two devices find each other.</div>
-</section>
+
+<div class="grid">
+
+<div class="card s3">
+    <h3>DEVICE</h3>
+    <div class="metric" id="device">Checking...</div>
+    <div class="small">Current device</div>
+</div>
+
+<div class="card s3">
+    <h3>NETWORK</h3>
+    <div class="metric" id="network">Checking...</div>
+    <div class="small">Internet status</div>
+</div>
+
+<div class="card s3">
+    <h3>BATTERY</h3>
+    <div class="metric" id="battery">Unavailable</div>
+    <div class="small" id="charging">Browser support dependent</div>
+</div>
+
+<div class="card s3">
+    <h3>TIME ZONE</h3>
+    <div class="metric" id="timezone">--</div>
+    <div class="small">Local time zone</div>
+</div>
+
+<div class="card s5">
+    <h3>DEVICE STATUS</h3>
+
+    <div class="status">
+        <span>Dashboard</span>
+        <span class="tag">OPERATIONAL</span>
+    </div>
+
+    <div class="status">
+        <span>Internet</span>
+        <span class="tag" id="internetTag">CHECKING</span>
+    </div>
+
+    <div class="status">
+        <span>Second device</span>
+        <span class="tag amber">NOT CONNECTED</span>
+    </div>
+
+    <button onclick="updateStatus()">REFRESH STATUS</button>
+    <button onclick="document.documentElement.requestFullscreen()">FULL SCREEN</button>
+</div>
+
+<div class="card s7">
+    <h3>OPERATIONS BOARD</h3>
+
+    <div class="status">
+        <span>HEADQUARTERS</span>
+        <strong>ARCHER HQ</strong>
+    </div>
+
+    <div class="status">
+        <span>OPERATIONAL STATE</span>
+        <span class="tag">READY</span>
+    </div>
+
+    <div class="status">
+        <span>EQUIPMENT CHECK</span>
+        <span class="tag amber">MANUAL CHECK</span>
+    </div>
+
+    <div class="status">
+        <span>LAST UPDATE</span>
+        <span id="updated">--</span>
+    </div>
+</div>
+
+<div class="card s7">
+    <h3>EQUIPMENT INVENTORY</h3>
+
+    <div id="inventory">
+        <div class="item">Archery supplies box <span class="tag">STORED</span></div>
+        <div class="item">Foam-dart equipment <span class="tag">STORED</span></div>
+        <div class="item">Eye protection <span class="tag amber">CHECK</span></div>
+    </div>
+
+    <div class="formrow">
+        <input id="newItem" placeholder="Add equipment...">
+        <button onclick="addItem()">ADD</button>
+    </div>
+</div>
+
+<div class="card s5">
+    <h3>HQ CHECKLIST</h3>
+    <div class="small">
+        <p>✓ Keep walkways clear</p>
+        <p>✓ Store equipment safely</p>
+        <p>✓ Check equipment condition</p>
+        <p>✓ Keep HQ tidy</p>
+        <p>✓ Use a clear play area</p>
+    </div>
+</div>
+
+<div class="card s12">
+    <h3>SYSTEM EVENT LOG</h3>
+    <div class="log" id="log">
+        [SYSTEM] ARCHER HQ INITIALISED.
+    </div>
+    <button onclick="addLog()">RUN SYSTEM CHECK</button>
+    <button onclick="document.getElementById('log').textContent=''">CLEAR LOG</button>
+</div>
+
+</div>
 </main>
-<footer>ARCHER HQ · Use only where everyone being recorded knows and agrees. This page does not record or save video.</footer>
-<script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+
+<footer>
+    ARCHER HQ · COMMAND DASHBOARD · NO CAMERA OR MICROPHONE ACCESS
+</footer>
+
 <script>
-(() => {
- const $=id=>document.getElementById(id);
- const mode=$('mode'),room=$('room'),status=$('status'),topState=$('topState');
- const remote=$('remote'),preview=$('preview'),start=$('start'),stop=$('stop'),flip=$('flip');
- let peer=null,stream=null,currentCall=null,facing='environment',retryTimer=null;
- const setStatus=(s,online=false)=>{status.textContent=s;topState.textContent=online?'● ONLINE':'● OFFLINE';topState.style.color=online?'var(--green)':'var(--amber)';$('connection').textContent=s};
- const cleanRoom=()=>room.value.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,8);
- function makeRoom(){const chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let s='';for(let i=0;i<6;i++)s+=chars[Math.floor(Math.random()*chars.length)];room.value=s}
- function peerId(role){return 'archerhq-'+cleanRoom().toLowerCase()+'-'+role}
- function stopAll(){
-   if(retryTimer)clearTimeout(retryTimer);retryTimer=null;
-   if(currentCall){try{currentCall.close()}catch{}currentCall=null}
-   if(peer){try{peer.destroy()}catch{}peer=null}
-   if(stream){stream.getTracks().forEach(t=>t.stop());stream=null}
-   preview.srcObject=null;remote.srcObject=null;
-   start.disabled=false;stop.disabled=true;flip.disabled=true;
-   setStatus('Disconnected.');
- }
- async function connectCamera(){
-   if(!navigator.mediaDevices?.getUserMedia)throw new Error('Camera access needs HTTPS. Open this page using its secure https:// address.');
-   stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:facing},width:{ideal:1280},height:{ideal:720}},audio:false});
-   preview.srcObject=stream;flip.disabled=false;
-   peer=new Peer(peerId('phone'));
-   peer.on('open',()=>{setStatus('Phone camera ready. Waiting for the PC command screen…',true);start.disabled=true;stop.disabled=false});
-   peer.on('call',call=>{currentCall=call;call.answer(stream);call.on('close',()=>{currentCall=null;setStatus('PC disconnected. Waiting for it to reconnect…',true)});call.on('error',e=>setStatus('Call error: '+e.message))});
-   peer.on('error',e=>setStatus('Connection error: '+e.message+' — check that both devices use the same room code.'));
- }
- function connectViewer(){
-   peer=new Peer(peerId('viewer'));
-   peer.on('open',()=>{setStatus('PC ready. Looking for the phone camera…',true);start.disabled=true;stop.disabled=false;callPhone()});
-   peer.on('error',e=>setStatus('Connection error: '+e.message+' — check the room code and try again.'));
- }
- function callPhone(){
-   if(!peer||peer.destroyed)return;
-   const call=peer.call(peerId('phone'),new MediaStream());
-   if(!call){retryTimer=setTimeout(callPhone,1800);return}
-   currentCall=call;
-   call.on('stream',s=>{remote.srcObject=s;setStatus('LIVE FEED CONNECTED',true)});
-   call.on('close',()=>{remote.srcObject=null;currentCall=null;if(peer&&!peer.destroyed){setStatus('Phone not connected. Searching…',true);retryTimer=setTimeout(callPhone,1800)}});
-   call.on('error',()=>{if(peer&&!peer.destroyed)retryTimer=setTimeout(callPhone,1800)});
-   // If the phone has not registered yet, retry.
-   retryTimer=setTimeout(()=>{if(!remote.srcObject&&peer&&!peer.destroyed){try{call.close()}catch{}callPhone()}},3500);
- }
- start.addEventListener('click',async()=>{
-   room.value=cleanRoom();
-   if(room.value.length<4){setStatus('Enter a room code with at least 4 letters or numbers.');return}
-   if(!window.Peer){setStatus('Could not load the connection library. Check your internet connection.');return}
-   start.disabled=true;setStatus('Starting…');
-   try{if(mode.value==='camera')await connectCamera();else connectViewer()}
-   catch(e){setStatus(e.message||'Could not start.');start.disabled=false}
- });
- stop.addEventListener('click',stopAll);
- flip.addEventListener('click',async()=>{
-   if(!stream)return;facing=facing==='environment'?'user':'environment';
-   const old=stream;try{const next=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:facing}},audio:false});
-     const track=next.getVideoTracks()[0];const oldTrack=old.getVideoTracks()[0];
-     if(currentCall?.peerConnection){const sender=currentCall.peerConnection.getSenders().find(s=>s.track?.kind==='video');if(sender)await sender.replaceTrack(track)}
-     oldTrack?.stop();stream=next;preview.srcObject=next;
-   }catch(e){facing=facing==='environment'?'user':'environment';setStatus('Could not switch camera: '+e.message,true)}
- });
- mode.addEventListener('change',()=>{$('viewerPanel').hidden=mode.value!=='viewer';$('cameraPanel').hidden=mode.value!=='camera'});
- makeRoom();
-})();
+const $ = id => document.getElementById(id);
+
+function updateClock() {
+    const now = new Date();
+
+    $('clock').textContent = now.toLocaleTimeString();
+    $('date').textContent = now.toLocaleDateString(
+        undefined,
+        { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }
+    );
+
+    $('timezone').textContent =
+        Intl.DateTimeFormat().resolvedOptions().timeZone;
+}
+
+function updateStatus() {
+    const online = navigator.onLine;
+
+    $('network').textContent = online ? 'ONLINE' : 'OFFLINE';
+    $('internetTag').textContent = online ? 'ONLINE' : 'OFFLINE';
+
+    $('device').textContent =
+        /iPhone|iPad|Android/i.test(navigator.userAgent)
+        ? 'MOBILE'
+        : 'COMPUTER';
+
+    $('updated').textContent = new Date().toLocaleTimeString();
+
+    addLog();
+}
+
+async function updateBattery() {
+    if (!navigator.getBattery) return;
+
+    try {
+        const battery = await navigator.getBattery();
+
+        function refresh() {
+            $('battery').textContent =
+                Math.round(battery.level * 100) + '%';
+
+            $('charging').textContent =
+                battery.charging ? 'Charging' : 'Not charging';
+        }
+
+        refresh();
+        battery.addEventListener('levelchange', refresh);
+        battery.addEventListener('chargingchange', refresh);
+    } catch {}
+}
+
+function addItem() {
+    const input = $('newItem');
+    const value = input.value.trim();
+
+    if (!value) return;
+
+    const item = document.createElement('div');
+    item.className = 'item';
+
+    const name = document.createElement('span');
+    name.textContent = value;
+
+    const button = document.createElement('button');
+    button.textContent = 'REMOVE';
+
+    button.onclick = () => item.remove();
+
+    item.append(name, button);
+    $('inventory').append(item);
+
+    input.value = '';
+}
+
+function addLog() {
+    $('log').textContent +=
+        '\n[' + new Date().toLocaleTimeString() +
+        '] SYSTEM CHECK COMPLETED.';
+}
+
+updateClock();
+updateStatus();
+updateBattery();
+
+setInterval(updateClock, 1000);
+
+addEventListener('online', updateStatus);
+addEventListener('offline', updateStatus);
 </script>
+
 </body>
 </html>
